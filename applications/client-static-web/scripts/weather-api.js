@@ -22,5 +22,5 @@ export const weatherApi = {
   /**
    * Returns the latest weather report
    */
-  getLatest: () => getLatest(`${BASE_URL}/api/${API_VERSION}/weather`)
+  getLatest: () => getLatest(`${BASE_URL}/api/${API_VERSION}/weather/latest`)
 }

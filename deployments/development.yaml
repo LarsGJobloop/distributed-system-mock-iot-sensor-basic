@@ -19,4 +19,21 @@ services:
     ports:
       - 9090:80
       - 9091:443
+    volumes:
+      - temperature:/data
+    networks:
+      - backbone
 
+  sensor-temperature:
+    build:
+      context: ../applications/sensor-temperature
+      dockerfile: Containerfile
+    environment:
+      WEATHER_ADDRESS: "http://server:80"
+    networks:
+      - backbone
+    depends_on:
+      - server
+
+networks:
+  backbone:

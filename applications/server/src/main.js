@@ -1,5 +1,3 @@
-/// <reference path="./models/weather-api.d.ts" />
-
 import * as http from 'node:http'
 import { logger } from './services/logger.js'
 import { routes } from './controllers/routes.js'
@@ -10,14 +8,22 @@ const PROTOCOL = "http"
 const HOST = process.env.HOST
 const PORT = process.env.PORT ?? 80
 
+const reports = []
+
 // Setup Server
 const server = http.createServer((request, response) => {
   const context = {
     logger,
+    reports: {
+      getAll: async () => [...reports],
+      getLatest: async () => reports[reports.length - 1],
+      push: async (newReport) => reports.push(newReport),
+    }
   }
 
   const path = request.url
-  const handler = routes[path]
+  const method = (request.method || "GET").toLowerCase()
+  const handler = routes[path][method]
 
   logger.info("recived request", {
     path,

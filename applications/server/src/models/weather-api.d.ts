@@ -32,3 +32,22 @@ type WeatherReport = {
    */
   location: LocationISO6709
 }
+
+type WeatherMeasurment = {
+  /**
+   * Id of sensor in the UUID format 8-4-4-4-12
+   */
+  sensorId: string,
+  /**
+   * Time of measurment in ISO 8601 format
+   */
+  timestamp: string,
+  /**
+   * Location in ISO 6709
+   */
+  location: LocationISO6709,
+  /**
+   * Record of measurments and their value
+   */
+  measurments: Record<string, number>,
+}

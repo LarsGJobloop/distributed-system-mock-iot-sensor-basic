@@ -1,28 +1,103 @@
-import { mock } from "../utilities/mocker.js"
+/// <reference path="../models/weather-api.d.ts" />
 
-// Generate mock data
-const reports = []
-const createMockReport = () => ({
-  id: mock.uuid(),
-  temperatureC: mock.randomInRangeInteger(5, 20),
-  timestamp: mock.timeNowIso(),
-  location: mock.randomCoordinatesIso(),
-})
-setInterval(() => reports.push(createMockReport()), 5000)
+import { IncomingMessage, ServerResponse } from "node:http"
 
-/**@returns {WeatherReport} */
-const getLatest = () => {
-  return reports[reports.length - 1]
+const parseJsonStream = async (stream) => {
+  return new Promise((resolve, reject) => {
+    let data = "";
+  
+    stream.on("data", (chunk) => {
+      data += chunk
+    })
+    stream.on("end", () => {
+      try {
+        const json = JSON.parse(data)
+        resolve(json)
+      } catch (error) {
+        reject(error)
+      }
+    })
+  })
 }
 
-// Configure Routes
-export const routes = {
-  "/api/v1/weather": async (req, res, context) => {
-    const data = JSON.stringify(getLatest())
-    res
-      .writeHead(200, {
-        "Content-Type": "application/json"
-      })
-      .end(data)
+/**
+ * @param {any} newData 
+ * @returns {WeatherReport}
+ */
+const createReport = (newData) => {
+  const temperatureC = newData.measurments["temperature"]
+  if (!temperatureC) {
+    throw new Error("missing temperature measurements")
   }
+
+  return {
+    id: newData.sensorId,
+    location: newData.location,
+    temperatureC,
+    timestamp: newData.timestamp,
+  }
+}
+
+/**
+ * @typedef {{
+ *  logger: typeof import("../services/logger.js")["logger"];
+ *  reports: {
+ *    getAll: () => Promise<WeatherReport[]>,
+ *    getLatest: () => Promise<WeatherReport>,
+ *    push: (newReport: WeatherReport) => Promise<void>,
+ *  };
+ * }} RequestContext
+ */
+
+/**
+ * @typedef {(
+ *   request: IncomingMessage,
+ *   response: ServerResponse<IncomingMessage> & {req: IncomingMessage},
+ *   context: RequestContext
+ * ) => void } RequestHandler
+ */
+
+/**
+ * @type {Record<string,
+ *  Record<
+ *    "get" | "post",
+ *    RequestHandler
+ *  >>
+ * }
+ */
+export const routes = {
+  "/api/v1/weather/latest": {
+    get: async (request, response, context) => {
+      const data = JSON.stringify(await context.reports.getLatest())
+
+      response
+        .writeHead(200, {
+          "Content-Type": "application/json"
+        })
+        .end(data)
+    },
+  },
+  "/api/v1/weather": {
+    get: async (request, response, context) => {
+      const data = JSON.stringify(await context.reports.getAll())
+
+      response
+        .writeHead(200, {
+          "Content-Type": "application/json"
+        })
+        .end(data)
+    },
+    post: async (request, response, context) => {
+      const payload = await parseJsonStream(request)
+      context.logger.info("request body", {body: payload})
+      
+      const newReport = createReport(payload)
+      context.reports.push(newReport)
+      context.logger.info("registered new report", {report: newReport})
+
+      response
+        .writeHead(200)
+        .end()
+    },
+  } 
 }
