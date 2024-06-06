@@ -8,10 +8,7 @@
 const BASE_URL = "http://localhost:9090"
 const API_VERSION = "v1"
 
-/**
- * @returns {Promise<WeatherReport>}
- */
-async function getLatest(address) {
+async function fetchJson(address) {
   const response = await fetch(address)
   const data = await response.json()
 
@@ -20,7 +17,13 @@ async function getLatest(address) {
 
 export const weatherApi = {
   /**
-   * Returns the latest weather report
+   * Gets the latest weather report
+   * @returns {Promise<WeatherReport>}
    */
-  getLatest: () => getLatest(`${BASE_URL}/api/${API_VERSION}/weather/latest`)
+  getLatest: async () => fetchJson(`${BASE_URL}/api/${API_VERSION}/weather/latest`),
+  /**
+   * Gets all registered reports
+   * @returns {Promise<WeatherReport[]>}
+   */
+  getAll: async () => fetchJson(`${BASE_URL}/api/${API_VERSION}/weather`),
 }

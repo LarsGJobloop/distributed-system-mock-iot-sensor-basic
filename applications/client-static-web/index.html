@@ -26,6 +26,28 @@
       <p>Measure Time: <span data-weather="timestamp">??</span></p>
       <p>Location: <span data-weather="location">??</span></p>
     </div>
+
+    <table id="weather-reports-table">
+      <caption>
+        Weather Reports
+      </caption>
+      <thead>
+        <tr>
+          <th scope="col">Location</th>
+          <th scope="col">Temperature</th>
+          <th scope="col">Measure Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        <template id="weather-reports-data-template">
+          <tr>
+            <th data-type="location" scope="row"></th>
+            <td data-type="temperature"></td>
+            <td data-type="timestamp"></td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
   </main>
 
   <footer>

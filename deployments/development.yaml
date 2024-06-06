@@ -34,6 +34,8 @@ services:
       - backbone
     depends_on:
       - server
+    deploy:
+      replicas: 5
 
 networks:
   backbone:
