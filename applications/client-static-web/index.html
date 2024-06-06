@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="shortcut icon" href="favicon.svg">
+
+  <link rel="stylesheet" href="style.css">
+
+  <script type="module" src="main.js"></script>
+  <script type="module" src="scripts/mocker.js"></script>
+  <script type="module" src="scripts/weather-api.js"></script>
+
+  <title>Weather</title>
+</head>
+
+<body>
+  <header>
+    <h1>Weather</h1>
+  </header>
+
+  <main>
+    <div id="weather-widget">
+      <p>Temperatur: <span data-weather="temperature">??</span><span>&deg;C</span></p>
+      <p>Measure Time: <span data-weather="timestamp">??</span></p>
+      <p>Location: <span data-weather="location">??</span></p>
+    </div>
+  </main>
+
+  <footer>
+    <a href="https://jobloop.no">Jobloop</a>
+  </footer>
+</body>
+
+</html>
