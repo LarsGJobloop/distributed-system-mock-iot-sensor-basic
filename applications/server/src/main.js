@@ -24,6 +24,11 @@ const server = http.createServer((request, response) => {
     method: request.method,
   })
 
+  response.setHeader(
+    // Allow Cross Origin Resource Sharing (CORS)
+    'Access-Control-Allow-Origin', '*'
+  )
+
   if (!handler) {
     logger.warning("request to non existing resource", {
       path,
