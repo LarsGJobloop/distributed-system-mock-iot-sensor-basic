@@ -10,3 +10,13 @@ services:
     ports:
       - 8080:80
 
+  server:
+    build:
+      context: ../applications/server
+      dockerfile: Containerfile
+    environment:
+      HOST: "server"
+    ports:
+      - 9090:80
+      - 9091:443
+
