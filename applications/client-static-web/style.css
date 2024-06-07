@@ -1,0 +1,96 @@
+/* Overrides */
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+ul,
+ol {
+  list-style-type: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+/* Typography */
+:root {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Colors */
+:root {
+  --color-text: #170c10;
+  --color-background: #faf5f7;
+  --color-primary: #a75876;
+  --color-secondary: #d1b0a8;
+  --color-accent: #bfa182;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-text: #f3e8ec;
+    --color-background: #0a0507;
+    --color-primary: #a75876;
+    --color-secondary: #57362e;
+    --color-accent: #7d5e40;
+  }
+}
+
+:root {
+  color: var(--color-text);
+  background-color: var(--color-background);
+}
+
+/* Bespoke */
+body {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+}
+
+body>header {
+  padding: 0.2em;
+  text-align: center;
+  background-color: var(--color-secondary);
+}
+
+body>main {
+  margin-right: auto;
+  margin-left: auto;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+body>footer {
+  padding: 0.2em;
+  text-align: center;
+  background-color: var(--color-secondary);
+}
+
+#weather-reports-table {
+  border-collapse: collapse;
+  border: 1px solid var(--color-secondary);
+}
+
+#weather-reports-table>thead {
+  text-align: left;
+}
+
+#weather-reports-table>tbody {
+  text-align: center;
+}
+
+#weather-reports-table th {
+  padding: 1em 2em;
+}
+
+#weather-reports-table tr:nth-child(even) {
+  background-color: var(--color-secondary);
+}
+
+#weather-reports-table tr:nth-child(odd) {
+  background-color: var(--color-accent);
+}

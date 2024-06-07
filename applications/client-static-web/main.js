@@ -20,7 +20,9 @@ async function updateWidget() {
     .textContent = new Date(report.timestamp).toLocaleString()
   weatherWidget
     .querySelector('[data-weather="location"]')
-    .textContent = Object.entries(report.location).map(([_,value]) => value).join(" ")
+    .textContent = Object.entries(report.location)
+      .map(([_,value]) => value)
+      .join(" ")
 }
 
 async function updateTable() {
