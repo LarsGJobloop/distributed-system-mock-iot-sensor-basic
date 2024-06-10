@@ -9,6 +9,7 @@ services:
       dockerfile: Containerfile
     ports:
       - 8080:80
+    pull_policy: "if_not_present"
 
   server:
     build:
@@ -21,6 +22,7 @@ services:
       - 9091:443
     networks:
       - backbone
+    pull_policy: "if_not_present"
 
   sensor-temperature:
     build:
@@ -32,6 +34,7 @@ services:
       - backbone
     depends_on:
       - server
+    pull_policy: "if_not_present"
     deploy:
       replicas: 1
 
