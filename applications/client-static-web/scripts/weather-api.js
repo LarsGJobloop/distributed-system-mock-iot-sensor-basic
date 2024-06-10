@@ -20,10 +20,10 @@ export const weatherApi = {
    * Gets the latest weather report
    * @returns {Promise<WeatherReport>}
    */
-  getLatest: async () => fetchJson(`${BASE_URL}/api/${API_VERSION}/weather/latest`),
+  getLatest: async () => await fetchJson(`${BASE_URL}/api/${API_VERSION}/weather/latest`),
   /**
-   * Gets all registered reports
+   * Gets all registered resports
    * @returns {Promise<WeatherReport[]>}
    */
-  getAll: async () => fetchJson(`${BASE_URL}/api/${API_VERSION}/weather`),
+  getAll: async () => await fetchJson(`${BASE_URL}/api/${API_VERSION}/weather`),
 }

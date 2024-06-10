@@ -1,13 +1,16 @@
 import { weatherApi } from "./scripts/weather-api.js";
 
 /** Refresh intervall in seconds */
-const refreshIntervalWidget = 5
-const refreshIntervalTable = 10
+const refreshInterval = 5
 
+// Elements from the document
 const weatherWidget = document.getElementById("weather-widget")
 const reportTable = document.getElementById("weather-reports-table")
 const reportTemplate = document.getElementById("weather-reports-data-template")
 
+/**
+ * Function for updating the Widget
+ */
 async function updateWidget() {
   /**@type {WeatherReport} */
   const report = await weatherApi.getLatest()
@@ -25,6 +28,9 @@ async function updateWidget() {
       .join(" ")
 }
 
+/**
+ * Function for updating the Table 
+ */
 async function updateTable() {
   const reports = await weatherApi.getAll()
 
@@ -53,12 +59,20 @@ async function updateTable() {
   reportTable.append(...reportTableEntries)
 }
 
-// Inital fetch
-Promise.allSettled([
-  updateWidget(),
-  updateTable(),
-])
+/**
+ * Function describing the update sequence
+ */
+async function updateGui() {
+  await Promise.allSettled([
+    updateWidget(),
+    updateTable(),
+  ])
+}
 
-// Set refresh cycle
-setInterval(updateWidget, refreshIntervalWidget * 1000) 
-setInterval(updateTable, refreshIntervalTable * 1000) 
+// Execute updates
+let error = null
+while (error === null) {
+  await updateGui()
+    .catch(err => error = err)
+  await new Promise(resolve => setTimeout(resolve, refreshInterval * 1000))
+}

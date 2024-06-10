@@ -19,8 +19,6 @@ services:
     ports:
       - 9090:80
       - 9091:443
-    volumes:
-      - temperature:/data
     networks:
       - backbone
 
@@ -35,7 +33,7 @@ services:
     depends_on:
       - server
     deploy:
-      replicas: 5
+      replicas: 1
 
 networks:
   backbone:

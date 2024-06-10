@@ -21,30 +21,39 @@ const server = http.createServer((request, response) => {
     }
   }
 
-  const path = request.url
-  const method = (request.method || "GET").toLowerCase()
-  const handler = routes[path][method]
-
-  logger.info("recived request", {
-    path,
-    method: request.method,
-  })
-
-  response.setHeader(
-    // Allow Cross Origin Resource Sharing (CORS)
-    'Access-Control-Allow-Origin', '*'
-  )
-
-  if (!handler) {
-    logger.warning("request to non existing resource", {
+  try {
+    const path = request.url
+    const method = (request.method || "GET").toLowerCase()
+    const handler = routes[path][method]
+  
+    logger.info("recived request", {
       path,
       method: request.method,
     })
+  
+    response.setHeader(
+      // Allow Cross Origin Resource Sharing (CORS)
+      'Access-Control-Allow-Origin', '*'
+    )
+  
+    if (!handler) {
+      logger.warning("request to non existing resource", {
+        path,
+        method: request.method,
+      })
+      response
+        .writeHead(404)
+        .end()
+    } else {
+      handler(request, response, context)
+    }
+  } catch (error) {
+    logger.error("Server error", {
+      error,
+    })
     response
-      .writeHead(404)
+      .writeHead(500)
       .end()
-  } else {
-    handler(request, response, context)
   }
 })
 
