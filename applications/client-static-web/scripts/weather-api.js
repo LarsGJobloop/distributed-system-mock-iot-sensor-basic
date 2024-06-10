@@ -1,4 +1,4 @@
-/// <reference path="weather-api.d.ts" />
+/// <reference path="../../../system-models/weather-api.d.ts" />
 
 // Since this is a static page we need to hardcode the URL
 // address here, which means that if we want to deploy this
