@@ -11,6 +11,14 @@ services:
       - 8080:80
     pull_policy: "if_not_present"
 
+  client-react:
+    build:
+      context: ../applications/client-react
+      dockerfile: Containerfile
+    ports:
+      - 8081:80
+    pull_policy: "if_not_present"
+
   server:
     build:
       context: ../applications/server
