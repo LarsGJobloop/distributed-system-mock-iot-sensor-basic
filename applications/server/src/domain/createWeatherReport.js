@@ -6,7 +6,7 @@
  */
 export const createWeatherReport = (report) => {
   return {
-    id: report.sensorId,
+    id: report.sensorId + (Number.MAX_SAFE_INTEGER / Math.random()).toString(),
     location: report.location,
     temperatureC: report.measurments.temperature,
     timestamp: report.timestamp,
