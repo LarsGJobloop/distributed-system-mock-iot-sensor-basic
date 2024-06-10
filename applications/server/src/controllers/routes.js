@@ -1,4 +1,4 @@
-/// <reference path="../../../../system-models/weather-api.d.ts" />
+/// <reference path="../../../../models/weather-api.d.ts" />
 
 import { IncomingMessage, ServerResponse } from "node:http"
 import { createWeatherReport } from '../domain/createWeatherReport.js'
