@@ -63,7 +63,7 @@ async function updateTable() {
  * Function describing the update sequence
  */
 async function updateGui() {
-  await Promise.allSettled([
+  return await Promise.all([
     updateWidget(),
     updateTable(),
   ])
@@ -72,7 +72,10 @@ async function updateGui() {
 // Execute updates
 let error = null
 while (error === null) {
-  await updateGui()
-    .catch(err => error = err)
+  try {
+    await updateGui()
+  } catch (err) {
+    error = err
+  }
   await new Promise(resolve => setTimeout(resolve, refreshInterval * 1000))
 }
